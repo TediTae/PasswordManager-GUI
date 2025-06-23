@@ -18,14 +18,15 @@ This project is ideal for beginners who are learning GUI programming and want to
 - 📋 **Clipboard Copy**  
   Generated passwords are instantly copied to your clipboard using `pyperclip`.
 
-- 📝 **Local Data Storage**  
-  Website, username, and password are stored in a plain `.txt` file.
+- 📝 **Local Data Storage with JSON**  
+  Credentials are now saved in `data.json` using a structured, expandable format.
+
+- 🔍 **Website-Based Password Search**  
+  You can now search for stored credentials by entering a website name.  
+  If found, the username and password are displayed — and the password is copied to clipboard automatically.
 
 - ⚠️ **Empty Field Detection**  
   Warns the user if any input field is left blank.
-
-- ✅ **Confirmation Dialog**  
-  Asks for user confirmation before saving any data.
 
 ---
 
@@ -53,8 +54,8 @@ This project is ideal for beginners who are learning GUI programming and want to
 ---
 
 ## 🧠 Future Improvements
-- ✅ Convert data storage to JSON format
-- 🔍 Add password search by website
+- ✅ Convert data storage to JSON format *(Completed ✅)*
+- 🔍 Add password search by website *(Completed ✅)*
 - 🔐 Encrypt saved credentials
 - 🌙 Dark mode / light mode switch
 - 💾 Use database (e.g. SQLite) for advanced storage
