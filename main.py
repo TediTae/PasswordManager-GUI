@@ -22,6 +22,21 @@ def generate_password():
     password_input.insert(0, password)
     pyperclip.copy(password)
 
+#------------FIND PASSWORD--------------------
+def find_password():
+    website = website_input.get()
+    try:
+        with open("data.json") as data_file:
+            data = json.load(data_file)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Error", message="No Data Found")
+    else:
+        if website in data:
+            user = data[website]["user"]
+            password = data[website]["password"]
+            messagebox.showinfo(title=website, message=f"Username: {user}\nPassword: {password}")
+        else:
+            messagebox.showinfo(title="Error", message=f"No details for {website} exists.")
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
@@ -36,15 +51,20 @@ def save():
         messagebox.showwarning(title="Warning", message="Please fill all the blank spaces.")
 
     else:
+        try:
+            with open("data.json", "r") as data_file:
+                data = json.load(data_file)
+        except FileNotFoundError:
+            with open("data.json", "w") as data_file:
+                json.dump(new_data, data_file, indent=4)
+        else:
+            data.update(new_data)
 
-        is_ok = messagebox.askokcancel(title=website, message=f"These are the details entered: \nEmail: {user} "
-                                                              f"\nPassword: {password}\nIs it okay to save?")
-
-        if is_ok:
-            with open("data.txt", "a") as data_file:
-                data_file.write(f"{website} | {user} | {password}\n")
-                website_input.delete(0, END)
-                password_input.delete(0, END)
+            with open("data.json", "w") as data_file:
+                json.dump(data, data_file, indent=4)
+        finally:
+            website_input.delete(0, END)
+            password_input.delete(0, END)
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
@@ -58,8 +78,8 @@ user_label.grid(row=2, column=0)
 password_label = Label(text="Password:")
 password_label.grid(row=3, column=0)
 
-website_input = Entry(width=50)
-website_input.grid(row=1, column=1, columnspan=2)
+website_input = Entry(width=32)
+website_input.grid(row=1, column=1)
 website_input.focus()
 username_input = Entry(width=50)
 username_input.grid(row=2, column=1, columnspan=2)
@@ -71,6 +91,8 @@ generate_pw_button = Button(text="Generate Password", command=generate_password)
 generate_pw_button.grid(row=3, column=2)
 add_button = Button(text="Add", width=43, command=save)
 add_button.grid(row=4, column=1, columnspan=2)
+search_button = Button(text="Search", width=14, command=find_password)
+search_button.grid(row=1, column=2)
 
 canvas = Canvas(width=200, height=200, highlightthickness=0)
 lock_image = PhotoImage(file="logo.png")
